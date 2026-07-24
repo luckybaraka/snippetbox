@@ -41,7 +41,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 
-	w.Write([]byte("Hello from snippetbox"))
+	// w.Write([]byte("Hello from snippetbox"))
 }
 
 // add a snippetView Handler - view  specific response
