@@ -55,6 +55,6 @@ func main() {
 	err := http.ListenAndServe(*addr, mux)
 	errorLog.Fatal(err) //error message
 
-	//we are kerabning that we can actually redirect the logs into something either splunk or on-disk file by using
+	//we are learning that we can actually redirect the logs into something either splunk or on-disk file by using
 	//here is wht we did in this application go run ./cmd/web >>/tmp/info.log 2>>/tmp/error.log
 }
