@@ -60,6 +60,8 @@ func main() {
 		Handler:  mux,
 	}
 
+	//We are learning that GO uses so many ways to show info into the terminal, in all cases it is important to NOT use Fatal() and Panic() anywhere outside our main.go
+
 	infoLog.Printf("Starting a server on %s", *addr) //informational message
 	err := srv.ListenAndServe()
 	errorLog.Fatal(err) //error message
