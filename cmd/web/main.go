@@ -62,6 +62,13 @@ func main() {
 
 	//We are learning that GO uses so many ways to show info into the terminal, in all cases it is important to NOT use Fatal() and Panic() anywhere outside our main.go
 
+	//lets comment out ho we can actaully store the logs in our project
+	// f, err := os.OpenFile("/tmp/info.log", os.O_RDWR|os.O_CREATE, 0666)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// defer f.Close()
+
 	infoLog.Printf("Starting a server on %s", *addr) //informational message
 	err := srv.ListenAndServe()
 	errorLog.Fatal(err) //error message
