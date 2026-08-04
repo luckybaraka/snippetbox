@@ -32,7 +32,7 @@ func main() {
 	//are joined using the bitwise OR operator |.
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 
-	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Llongfile|log.LUTC)
 
 	mux := http.NewServeMux()
 
