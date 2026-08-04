@@ -7,6 +7,14 @@ import (
 	"os"
 )
 
+// Define an application struct to hold the application-wide dependancies for the
+// web application. For now we'll only include feilds for the two custom loggers, but
+// we'll add more to it as the build progresses.
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
+
 func main() {
 
 	// type config struct {
@@ -34,6 +42,11 @@ func main() {
 
 	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Llongfile|log.LUTC)
 
+	app := &application{
+		errorLog: errorLog,
+		infoLog:  infoLog,
+	}
+
 	mux := http.NewServeMux()
 
 	// Create a file server which serves files out of the "./ui/static" directory.
@@ -47,9 +60,9 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	// Register the other application routes as normal.
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet/view", snippetView)
-	mux.HandleFunc("/snippet/create", snippetCreate)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/snippet/view", app.snippetView)
+	mux.HandleFunc("/snippet/create", app.snippetCreate)
 
 	//Initliaze a new http>server struct. We set the Addr and Handler fields so that
 	//the server uses the same network address and routes as before, and set

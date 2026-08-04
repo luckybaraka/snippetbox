@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"text/template"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
+// Chaange the signature of the home handler so it defined as a method against *application
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
@@ -29,7 +29,11 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// paths as a variadic parameter?
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Print(err.Error())
+		//because the home Handler function is now a method against application
+		//it can access its fields, including the error logger. We'll write the log
+		//message to this instead of the standard logger
+		app.errorLog.Print(err.Error())
+		// log.Print(err.Error())
 		http.Error(w, "Internal Server error", http.StatusInternalServerError)
 	}
 
@@ -37,7 +41,8 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// template as the response body.
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
-		log.Print(err.Error())
+		app.errorLog.Print(err.Error())
+		// log.Print(err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 
@@ -45,7 +50,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 }
 
 // add a snippetView Handler - view  specific response
-func snippetView(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
 		http.NotFound(w, r)
@@ -56,7 +61,7 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 }
 
 // create a new snippet
-func snippetCreate(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.Header().Set("Allow", http.MethodGet)
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
