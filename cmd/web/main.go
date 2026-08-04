@@ -7,7 +7,23 @@ import (
 )
 
 func main() {
-	addr := flag.String("addr", ":4000", "HTTP network address")
+
+	// type config struct {
+	// 	addr      string
+	// 	staticDir string
+	// }
+
+	// var cfg config
+
+	// flag.StringVar(&cfg.addr, "addr", ":4000", "HTTP network addrress")
+	// flag.StringVar(&cfg.staticDir, "static-dir", "./ui/static", "Path to static assets")
+	addr := flag.String("addr", ":4000", "HTTP Network address")
+	// importantly we use flag.Parse() function to parse the command line flag
+	//This reads in the comamnd-line flag value and assign it to the addr
+	//Otherwise it will always default value ":4000", If any errors are
+	//encountered during parsing the application will be terminated
+	flag.Parse()
+
 	mux := http.NewServeMux()
 
 	// Create a file server which serves files out of the "./ui/static" directory.
